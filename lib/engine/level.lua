@@ -1,3 +1,6 @@
+require "lib/constructors/pickups"
+require "lib/engine/entity"
+require "lib/engine/rendering"
 -- sprite index -> entity constructor
 map_cons = {
     [1] = cons_player,

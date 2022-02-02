@@ -1,6 +1,8 @@
+require "lib/utilities/utilities"
 local e_counter = 0
 entity = {}
 entity.__index = entity
+entities = {}
 function entity:new()
     local e = {
         components = {},
@@ -14,7 +16,7 @@ end
 function entity:destroy()
     entities[self] = nil
 end
-function entity:render()
+function entity:render()entities = {}
     for _, r in pairs(self.components) do
         r:render(self)
     end

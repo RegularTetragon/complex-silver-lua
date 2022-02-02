@@ -1,4 +1,5 @@
-require "engine.entity"
+require "lib/engine/entity"
+systems = {}
 function system(obj)
     assert(obj.name)
     table.insert(systems, obj.name)

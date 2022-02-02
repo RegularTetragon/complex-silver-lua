@@ -1,3 +1,4 @@
+require "lib/engine/systems"
 rend_map = system {
     name = "rend_map"
 }

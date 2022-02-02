@@ -1,7 +1,5 @@
 require "lib/engine/v2"
-
-entities = {}
-systems = {}
+require "lib/engine/level"
 
 level(v2:new(), v2:new(26, 16))
 
