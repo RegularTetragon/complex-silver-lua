@@ -1,3 +1,5 @@
+require "lib/engine/v2"
+
 entities = {}
 systems = {}
 
