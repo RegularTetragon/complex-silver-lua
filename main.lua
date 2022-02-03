@@ -1,7 +1,8 @@
-require "lib/engine/v2"
-require "lib/engine/level"
+require "engine.v2"
+require "engine.level"
 
-level(v2:new(), v2:new(26, 16))
+local untitledLevel = level:load "untitled"
+untitledLevel:construct(v2:new(), v2:new(26, 16))
 
 function love.update(dt)
     for _, system in pairs(systems) do

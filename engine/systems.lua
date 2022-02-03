@@ -1,4 +1,4 @@
-require "lib/engine/entity"
+require "engine.entity"
 systems = {}
 function system(obj)
     assert(obj.name)

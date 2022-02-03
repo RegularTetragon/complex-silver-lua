@@ -1,4 +1,4 @@
-require "lib/utilities/utilities"
+require "engine.utilities.utilities"
 local e_counter = 0
 entity = {}
 entity.__index = entity

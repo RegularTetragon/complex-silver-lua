@@ -1,6 +1,7 @@
-require "lib/constructors/pickups"
-require "lib/engine/entity"
-require "lib/engine/rendering"
+require "engine.constructors.pickups"
+require "engine.entity"
+require "engine.systems.rendering"
+require "engine.v2"
 -- sprite index -> entity constructor
 map_cons = {
     [1] = cons_player,
@@ -12,13 +13,26 @@ map_cons = {
     [27] = cons_breakable
 }
 
-function level(lb, ub)
+level = { }
+level.__index = level
+function level:new(obj)
+    return setmetatable(obj, level)
+end
+
+function level:load(str)
+    return level:new(require("assets.maps."..str))
+end
+
+function level:construct()
     local lvl = entity:new()
+    local lb = zero
+    local ub = v2:new(self.width, self.height)
     lvl:add(rend_map:new(lb, ub, nil))
     local rects = {}
-    for x = lb.x, ub.x do
-        for y = lb.y, ub.y do
-            local sprite = mget(x, y)
+    for _, layer in pairs(self.layers) do
+        for tile_id, sprite in pairs(layer.data) do
+            local x = tile_id % layer.width + layer.x
+            local y = math.floor(tile_id/layer.width) + layer.y
             if map_cons[sprite] then
                 map_cons[sprite](v2:new(x * 8, y * 8))
             end
