@@ -160,8 +160,6 @@ end
 function col:overlap(other, p_self, p_other)
     local e_lb = self.lb + p_self
     local e_ub = self.ub + p_self
-    print(other.lb)
-    print(p_other)
     local o_lb = other.lb + p_other
     local o_ub = other.ub + p_other
     return (e_lb.x < o_ub.x and e_ub.x > o_lb.x and e_ub.y > o_lb.y and e_lb.y < o_ub.y)
@@ -179,7 +177,7 @@ function col:render(e)
     end
 end
 
-local weld = system {
+weld = system {
     name = "weld",
     priority = 2
 }

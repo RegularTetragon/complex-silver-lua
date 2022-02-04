@@ -3,6 +3,7 @@ local pickup = system {
 }
 pickup.__index = pickup
 function pickup:new(on_pickup)
+    assert(on_pickup)
     return setmetatable({
         on_pickup = on_pickup or not_implemented,
         float_t = 0

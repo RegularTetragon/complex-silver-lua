@@ -49,7 +49,7 @@ function gun:update(e, dt)
         self.cons_proj(e)
         self.shot_timer = self.fire_delay
         e.anim_ctl.state = "shoot"
-        sfx(self.fire_sound)
+        love.audio.newSource(self.fire_sound, "static"):play()
     end
     if self.ammo <= 0 then
         e:destroy()

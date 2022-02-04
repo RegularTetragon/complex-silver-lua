@@ -11,7 +11,7 @@ function v2:new(x, y)
     }, v2)
 end
 function v2:angle(th, d)
-    return v2:new(cos(th) * d, sin(th) * d)
+    return v2:new(math.cos(th) * d, math.sin(th) * d)
 end
 function v2:unit(unsafe)
     local magnitude = self:magnitude()

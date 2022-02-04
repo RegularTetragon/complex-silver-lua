@@ -7,13 +7,13 @@ damager.__index = damager
 function damager:new(dmg, layer)
     return setmetatable({
         dmg = dmg,
-        layer = layer or 1
+        layer = layer or layer_world
     }, damager)
 end
 function damager:update(e, dt)
     local cs = e.col.collisions
     for _, c in pairs(cs) do
-        if c.health and c.health.health > 0 and (c.health.layer & self.layer) ~= 0 then
+        if c.health and c.health.health > 0 and (c.health.layer:intersects(self.layer)) then
             c.health.health = c.health.health - self.dmg
             e:destroy()
         end

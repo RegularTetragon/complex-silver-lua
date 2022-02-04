@@ -11,7 +11,7 @@ function anim:new(ts, frames, speed)
         tileset = ts,
         speed = speed,
         frames = frames,
-        frame = 0,
+        frame = 1,
         eol_callbacks = {},
         looped = false
     }, anim)

@@ -1,21 +1,30 @@
-require "engine.weld"
-require "engine.physics"
-require "engine.debris"
+require "engine.systems.physics"
+require "engine.systems.health"
+require "engine.constructors.effects"
+local debris = require "engine.systems.debris"
+local Gun = require "engine.systems.gun"
 local layerset = require "engine.layer"
 
-function cons_gun(ammo, fire_rate, cons_proj, anim_ctl, offset, fire_sound, owner_knockback)
+function cons_gun(
+    ammo,
+    fire_rate,
+    cons_proj,
+    anim_ctl,
+    offset,
+    fire_sound,
+    owner_knockback
+)
     return function(spawner, player)
-        sfx(5)
+        love.audio.newSource("assets/sounds/sfx_5.wav", "static"):play()
         local e = entity:new()
         e:add(trans:new())
         e:add(anim_ctl)
         e.anim_ctl:trans("shoot", function()
-            if e.anim_ctl.states.shoot.looped then
-                return "start"
-            end
+            if e.anim_ctl.states.shoot.looped then return "start" end
         end)
         e:add(weld:new(player, offset))
-        e:add(gun:new(ammo, fire_rate, cons_proj, player, fire_sound, owner_knockback))
+        e:add(Gun.gun:new(ammo, fire_rate, cons_proj, player, fire_sound,
+                      owner_knockback))
         return true
     end
 end
@@ -31,8 +40,10 @@ function cons_proj(n, spread, speed, anim)
             p.trans.mirror_x = e.trans.mirror_x
             p:add(anim)
             p:add(rb:new(0, 0))
-            p:add(col:new(v2:new(2, 2), v2:new(6, 6), false, false, layer_world + layer_enemy, layer_projectile))
-            p.rb.v = v2:new(e.trans.mirror_x and -speed or speed, (2 * rnd() - 1) * spread)
+            p:add(col:new(v2:new(2, 2), v2:new(6, 6), false, false,
+                          layer_world + layer_enemy, layer_projectile))
+            p.rb.v = v2:new(e.trans.mirror_x and -speed or speed,
+                            (2 * math.random() - 1) * spread)
             p:add(debris:new(1))
         end
         return projs
@@ -40,7 +51,8 @@ function cons_proj(n, spread, speed, anim)
 end
 
 function cons_grenade(e)
-    local ps = cons_proj(1, 0, 100, anim:new(tileset:load("sprites"), {35, 36}))(e)
+    local ps =
+        cons_proj(1, 0, 100, anim:new(tileset:load("sprites"), {35, 36}))(e)
     for _, p in pairs(ps) do
         p.rb.gravity = 2
         p.rb.v = p.rb.v + up * 128
@@ -61,7 +73,8 @@ function cons_bullet(n, spread, speed, anim, dmg, layer)
 end
 
 function cons_rocket(e)
-    local rs = cons_proj(1, 0, 80, anim:new(tileset:load("sprites"), {14, 30}))(e)
+    local rs = cons_proj(1, 0, 80, anim:new(tileset:load("sprites"), {14, 30}))(
+                   e)
     for _, r in pairs(rs) do
         r.col.mask = layer_world
         r.col:on_collision(function(r, with)
@@ -84,57 +97,87 @@ function cons_throw(anim, on_land, from)
     e.rb.v = v2:new(from.trans.mirror_x and -throw_speed or throw_speed, 20)
 end
 
-local cons_shotgun = cons_gun(4, -- ammo
-1, -- rate
-cons_bullet(4, -- pellets
-75, -- spread
-150, -- speed
-anim:new(tileset:load("sprites"), {10}), -- sprite,
-1, -- dmg,
-1 -- layer
-), anim_ctl:new{
-    start = anim:new(tileset:load("sprites"), {6}),
-    shoot = anim:new(tileset:load("sprites"), {7, 6})
-}, v2:new(4, -1), 1, 60)
+cons_shotgun = cons_gun(
+    4, -- ammo
+    1, -- rate
+    cons_bullet(
+        4, -- pellets
+        75, -- spread
+        150, -- speed
+        anim:new(tileset:load("sprites"), {11}), -- sprite,
+        1, -- dmg,
+        1 -- layer
+    ),
+    anim_ctl:new{
+        start = anim:new(tileset:load("sprites"), {7}),
+        shoot = anim:new(tileset:load("sprites"), {8, 7})
+    },
+    v2:new(4, -1), -- offset
+    "assets/sounds/sfx_1.wav", -- sound effect
+    60
+)
 
-local cons_grenade_launcher = cons_gun(8, -- ammo
-1, -- rate
-cons_grenade, anim_ctl:new{
-    start = anim:new(tileset:load("sprites"), {37}),
-    shoot = anim:new(tileset:load("sprites"), {37})
-}, v2:new(4, -1), 1, 60)
+cons_grenade_launcher = cons_gun(
+    8, -- ammo
+    1, -- rate
+    cons_grenade,
+    anim_ctl:new{
+        start = anim:new(tileset:load("sprites"), {38}),
+        shoot = anim:new(tileset:load("sprites"), {38})
+    },
+    v2:new(4, -1),
+    "assets/sounds/sfx_1.wav",
+    60
+)
 
-local cons_rifle = cons_gun(16, -- ammo
-.25, -- rate
-cons_bullet(1, -- pellets
-30, -- spread
-400, -- speed
-anim:new(tileset:load("sprites"), {9}), -- spr,
-1, -- dmg
-1 -- layer
-), anim_ctl:new{
-    start = anim:new(tileset:load("sprites"), {24}),
-    shoot = anim:new(tileset:load("sprites"), {24})
-}, v2:new(4, -1), 0, 10)
+cons_rifle = cons_gun(
+    16, -- ammo
+    .25, -- rate
+    cons_bullet(1, -- pellets
+        30, -- spread
+        400, -- speed
+        anim:new(tileset:load("sprites"), {10}), -- spr,
+        1, -- dmg
+        1 -- layer
+    ),
+    anim_ctl:new{
+        start = anim:new(tileset:load("sprites"), {25}),
+        shoot = anim:new(tileset:load("sprites"), {25})
+    },
+    v2:new(4, -1),
+    "assets/sounds/sfx_0.wav",
+    10
+)
 
-local cons_rocket_launcher = cons_gun(16, -- ammo
-1, -- rate
-cons_rocket, anim_ctl:new{
-    start = anim:new(tileset:load("sprites"), {13}),
-    shoot = anim:new(tileset:load("sprites"), {13})
-}, v2:new(0, -2), 2, 75)
+cons_rocket_launcher = cons_gun(
+    16, -- ammo
+    1, -- rate
+    cons_rocket,
+    anim_ctl:new{
+        start = anim:new(tileset:load("sprites"), {14}),
+        shoot = anim:new(tileset:load("sprites"), {14})
+    },
+    v2:new(0, -2),
+    "assets/sounds/sfx_2.wav",
+    75
+)
 
-local cons_pistol = cons_gun(8, -- ammo
-.5, -- rate
-cons_bullet(1, -- pellets
-2, -- spread
-300, -- speed
-anim:new(tileset:load("sprites"), {9}), -- sprite,
-1, -- damage
-1 -- layer
-), anim_ctl:new{
-    start = anim:new(tileset:load("sprites"), {8}),
-    shoot = anim:new(tileset:load("sprites"), {25, 8})
-}, v2:new(4, -1), 0, -- sound,
-30 -- knockback
+cons_pistol = cons_gun(
+    8, -- ammo
+    .5, -- rate
+    cons_bullet(
+        1, -- pellets
+        2, -- spread
+        300, -- speed
+        anim:new(tileset:load("sprites"), {10}), -- sprite,
+        1, -- damage
+        1 -- layer
+    ),
+    anim_ctl:new{
+        start = anim:new(tileset:load("sprites"), {9}),
+        shoot = anim:new(tileset:load("sprites"), {26, 9})
+    },
+    v2:new(4, -1),
+    "assets/sounds/sfx_0.wav", -- sound,
+    30 -- knockback
 )

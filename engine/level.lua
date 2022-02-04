@@ -1,5 +1,6 @@
 require "engine.constructors.pickups"
 require "engine.constructors.player"
+require "engine.constructors.guns"
 require "engine.entity"
 require "engine.systems.rendering"
 require "engine.v2"
@@ -67,7 +68,6 @@ function level:construct()
             end
             local tile_props = self:tileset(layer_id):props(sprite_id)
             if tile_props.Solid then
-                print "Solid"
                 local col_entity = entity:new()
                 col_entity:add(trans:new())
                 col_entity.trans.p = p

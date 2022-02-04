@@ -1,5 +1,5 @@
 local layerset = require "engine.layer"
-_dbg_rb = true
+_dbg_rb = false
 _dbg_col = false
 _dbg_gun = false
 _dbg_anim_ctl = false

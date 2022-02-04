@@ -11,7 +11,7 @@ end
 function debris:update(e, dt)
     self.t = self.t - dt
     if self.t <= 0 then
-        for _, f in pairs(callbacks) do
+        for _, f in pairs(self.callbacks) do
             f(e)
         end
         e:destroy()
@@ -23,3 +23,4 @@ end
 function debris:render()
 
 end
+return debris

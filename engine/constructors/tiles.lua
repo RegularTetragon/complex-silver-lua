@@ -7,7 +7,7 @@ function cons_breakable(pos)
     e:add(anim:new(tileset:load("sprites"), {27}))
     e.health:on_death(function(e)
         cons_shrapnel(3, e.trans.p, {{32}, {33}, {34}})
-        sfx(03)
+        love.audio.newSource("assets/sounds/sfx_3.wav", "static"):play()
         e:destroy()
     end)
 end
