@@ -53,7 +53,7 @@ function rb:render(e)
     end
 end
 
-local col = system {
+col = system {
     name = "col"
 }
 col.__index = col
@@ -71,8 +71,8 @@ function col:new(lb, ub, static, solid, mask, layer)
         solid = solid,
         collisions = {},
         callbacks = {},
-        mask = mask or m_all,
-        layer = layer or mask or m_all
+        mask = mask or layer_all,
+        layer = layer or mask or layer_all
     }, col)
 end
 function col:on_collision(f)
@@ -90,7 +90,7 @@ function col:check(e)
     for other, active in pairs(entities) do
         if active then
             local ocol = other.col
-            if ocol and (self.mask & ocol.layer) ~= 0 then
+            if ocol and (self.mask:intersects(ocol.layer)) ~= 0 then
                 local opos = other.trans.p
                 if e ~= other and self:overlap(ocol, p, opos) then
                     table.insert(self.collisions, other)
@@ -124,7 +124,7 @@ function col:deintersect(e, from_e)
     if s_b < f_t and s_b > f_b then
         table.insert(options, v2:new(0, f_t - s_b))
     end
-    if true then
+    if false then
 
         -- need to move left
         if s_r > f_l and s_r < f_r then
@@ -160,6 +160,8 @@ end
 function col:overlap(other, p_self, p_other)
     local e_lb = self.lb + p_self
     local e_ub = self.ub + p_self
+    print(other.lb)
+    print(p_other)
     local o_lb = other.lb + p_other
     local o_ub = other.ub + p_other
     return (e_lb.x < o_ub.x and e_ub.x > o_lb.x and e_ub.y > o_lb.y and e_lb.y < o_ub.y)

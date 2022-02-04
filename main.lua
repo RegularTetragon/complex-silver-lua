@@ -1,25 +1,36 @@
+if os.getenv("LOCAL_LUA_DEBUGGER_VSCODE") == "1" then
+    require("lldebugger").start()
+end
+
+require "engine.entity"
+require "engine.systems"
+require "engine.tileset"
+
 require "engine.v2"
 require "engine.level"
+require "engine.constants"
 
 local untitledLevel = level:load "untitled"
-untitledLevel:construct(v2:new(), v2:new(26, 16))
+untitledLevel:construct()
 
+local ts = tileset:load "sprites"
+local spr = ts:sprite(1)
+
+local t = 0
 function love.update(dt)
+    t = t + dt
     for _, system in pairs(systems) do
         for entity, active in pairs(entities) do
             if entity[system] then
-                entity[system]:update(entity, old_t and t - old_t or 1 / 30)
+                entity[system]:update(entity, dt)
             end
         end
     end
-    old_t = dt
-    cam = player_instance.trans.p
-    camera(cam.x - 64 + rnd() * screen_shake, cam.y - 96 + rnd() * screen_shake)
 end
 
 function love.draw()
-    cls()
     local e_count
+    love.graphics.scale(zoom, zoom)
     for _, system in pairs(systems) do
         e_count = 0
         for entity, active in pairs(entities) do

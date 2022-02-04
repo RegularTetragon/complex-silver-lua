@@ -1,15 +1,19 @@
-local player_instance
+require "engine.systems.graphics"
+local Gun = require "engine.systems.gun"
+local controls = require "engine.systems.controls"
+local camera = require "engine.systems.camera"
+player_instance=nil
 
 function cons_player(pos)
     local p = entity:new()
     player_instance = p
     local p_anim = anim_ctl:new{
-        start = anim:new{1},
-        walk = anim:new{1, 2},
-        rise = anim:new{18},
-        fall = anim:new{4, 5},
-        slid = anim:new{3},
-        crch = anim:new{17}
+        start = anim:new(tileset:load("sprites"), {2}),
+        walk = anim:new(tileset:load("sprites"), {2, 3}),
+        rise = anim:new(tileset:load("sprites"), {19}),
+        fall = anim:new(tileset:load("sprites"), {5, 6}),
+        slid = anim:new(tileset:load("sprites"), {4}),
+        crch = anim:new(tileset:load("sprites"), {18})
     }
     function t_motion(e)
         if e.controls.crouch then
@@ -20,7 +24,7 @@ function cons_player(pos)
             end
         end
         if e.rb.is_grounded then
-            local is_moving = abs(e.rb.v.x) > .1
+            local is_moving = math.abs(e.rb.v.x) > .1
             if is_moving then
                 return "walk"
             else
@@ -32,10 +36,22 @@ function cons_player(pos)
             return "fall"
         end
     end
-    p:add(col:new(v2:new(), v2:new(8, 8), false, false, m_world | m_player, m_player))
+    p:add(
+        camera:new()
+    )
+    p:add(
+        col:new(
+            v2:new(),
+            v2:new(8, 8),
+            false,
+            false,
+            layer_world + layer_player,
+            layer_player
+        )
+    )
     p:add(controls:new())
     p:add(trans:new())
-    p:add(hold:new())
+    p:add(Gun.hold:new())
     p.trans.p = pos
     p:add(p_anim)
     p:add(rb:new())

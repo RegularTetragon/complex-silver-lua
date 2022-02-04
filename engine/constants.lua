@@ -1,3 +1,4 @@
+local layerset = require "engine.layer"
 _dbg_rb = true
 _dbg_col = false
 _dbg_gun = false
@@ -5,12 +6,12 @@ _dbg_anim_ctl = false
 _dbg_systems = false
 _dbg_ctl = false
 
-m_all = 0xff
-m_world = 0x01
-m_enemy = 0x02
-m_player = 0x04
-m_projectile = 0x08
-m_shrapnel = 0x16
+layer_world = layerset:from_list {1}
+layer_enemy = layerset:from_list {2}
+layer_player = layerset:from_list{3}
+layer_projectile = layerset:from_list{4}
+layer_shrapnel = layerset:from_list{5}
+layer_all = layer_world + layer_enemy + layer_player + layer_projectile + layer_shrapnel
 
 grav = 300
 air_accel = 200
@@ -22,3 +23,5 @@ screen_shake = 0
 explosion_speed = 60
 explosion_angles = 4
 explosion_rs = 1
+
+zoom = 2

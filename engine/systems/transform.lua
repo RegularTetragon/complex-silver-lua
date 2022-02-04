@@ -6,6 +6,7 @@ function trans:new()
     return setmetatable({
         p = v2:new(),
         s = v2:new(1, 1),
+        r = 0,
         mirror_x = false,
         mirror_y = false
     }, trans)

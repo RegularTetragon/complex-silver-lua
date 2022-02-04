@@ -2,10 +2,13 @@ anim = system {
     name = "anim"
 }
 anim.__index = anim
-function anim:new(frames, speed)
+function anim:new(ts, frames, speed)
+    assert(ts and getmetatable(ts) == tileset, "ts must be a tileset")
+    assert(frames, "frames must be defined")
     local speed = speed or 4
     return setmetatable({
         t = 0,
+        tileset = ts,
         speed = speed,
         frames = frames,
         frame = 0,
@@ -31,8 +34,8 @@ function anim:update(e, dt)
 end
 
 function anim:render(e)
-    spr(self.frames[self.frame], e.trans.p.x, e.trans.p.y, e.trans.s.x, e.trans.s.y, e.trans.mirror_x, e.trans.mirror_y)
-    self.last_frame = frm
+    assert(getmetatable(self.tileset) == tileset)
+    self.tileset:draw(self.frames[self.frame], e.trans)
 end
 
 anim_ctl = system {
@@ -82,7 +85,7 @@ function flipper:new()
     return setmetatable({}, flipper)
 end
 function flipper:update(e)
-    if abs(e.rb.v.x) > .1 then
+    if math.abs(e.rb.v.x) > .1 then
         e.trans.mirror_x = e.rb.v.x < 0
     end
 end

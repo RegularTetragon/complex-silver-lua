@@ -79,3 +79,5 @@ function throwable:update(e, dt)
         e:destroy()
     end
 end
+
+return {hold=hold, gun=gun, throwable=throwable}

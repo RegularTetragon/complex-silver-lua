@@ -17,3 +17,4 @@ function pickup:update(e, dt)
 end
 function pickup:render()
 end
+return pickup

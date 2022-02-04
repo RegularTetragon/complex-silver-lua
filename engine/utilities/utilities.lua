@@ -1,20 +1,31 @@
 function stringify(t, n)
+    n = n or 0
+    local tabs = ""
+    for i = 0, n do
+        tabs = tabs .. "  "
+    end
+    if n > 5 then
+        return "....."
+    end
+    if type(t) ~= "table" then
+        return tostring(t)
+    end
     local mt = getmetatable(t)
     if mt and mt.__tostring then
         return tostring(t)
     end
 
-    local out = "{\n"
+    local out = tabs.."{\n"
     for k, v in pairs(t) do
         if type(k) == "string" then
-            out = out .. k .. "="
+            out = out .. tabs .. k .. "="
         else
-            out = out .. "[" .. tostring(k) .. "]=";
+            out = out .. tabs .. "[" .. tostring(k) .. "]=";
         end
         if type(v) == "table" then
-            out = out .. stringify(v, n)
+            out = out .. stringify(v, n + 1)
         elseif type(v) == "function" then
-            out = out .. "function()"
+            out = out .. "function(...) ... end"
         elseif type(v) == "string" then
             out = out .. '"' .. v .. '"'
         else
@@ -25,7 +36,7 @@ function stringify(t, n)
             out = out .. "\n"
         end
     end
-    out = out .. "}"
+    out = out..tabs.. "}"
     return out
 end
 
@@ -74,9 +85,9 @@ function sort(xs, key)
 end
 
 function sign(n)
-    if sign == 0 then
+    if n == 0 then
         return 0
-    elseif sign > 0 then
+    elseif n > 0 then
         return 1
     else
         return -1
