@@ -1,3 +1,4 @@
+require "engine.state"
 anim = system {
     name = "anim"
 }

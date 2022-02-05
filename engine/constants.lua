@@ -1,4 +1,5 @@
 local layerset = require "engine.layer"
+require "engine.v2"
 _dbg_rb = false
 _dbg_col = false
 _dbg_gun = false
@@ -21,7 +22,8 @@ jump_v = 90
 max_jump_time = .15
 screen_shake = 0
 explosion_speed = 60
-explosion_angles = 4
+explosion_angles = 8
 explosion_rs = 1
 
 zoom = 2
+global_camera = zero

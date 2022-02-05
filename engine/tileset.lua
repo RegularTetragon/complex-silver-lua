@@ -60,8 +60,8 @@ function tileset:draw(index, trans)
     local spr = self:sprite(index)
     love.graphics.draw(
         spr,
-        trans.p.x * zoom,
-        trans.p.y * zoom,
+        (trans.p.x - global_camera.x) * zoom,
+        (trans.p.y - global_camera.y) * zoom,
         trans.p.r,
         trans.p.mirror_x and -1 or 1,
         trans.p.mirror_y and -1 or 1

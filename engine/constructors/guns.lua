@@ -57,7 +57,7 @@ function cons_grenade(e)
         p.rb.gravity = 2
         p.rb.v = p.rb.v + up * 128
         p.debris:on_destroy(function()
-            cons_explosion(1, p.trans.p, p_enemy)
+            cons_explosion(1, p.trans.p, layer_enemy + layer_world)
         end)
     end
 end
@@ -79,7 +79,7 @@ function cons_rocket(e)
         r.col.mask = layer_world
         r.col:on_collision(function(r, with)
             if with ~= player then
-                cons_explosion(1, r.trans.p, 1)
+                cons_explosion(1, r.trans.p, layer_enemy + layer_world)
                 r:destroy()
             end
         end)
@@ -106,7 +106,7 @@ cons_shotgun = cons_gun(
         150, -- speed
         anim:new(tileset:load("sprites"), {11}), -- sprite,
         1, -- dmg,
-        1 -- layer
+        layer_world + layer_enemy -- layer
     ),
     anim_ctl:new{
         start = anim:new(tileset:load("sprites"), {7}),
@@ -138,7 +138,7 @@ cons_rifle = cons_gun(
         400, -- speed
         anim:new(tileset:load("sprites"), {10}), -- spr,
         1, -- dmg
-        1 -- layer
+        layer_world + layer_enemy -- layer
     ),
     anim_ctl:new{
         start = anim:new(tileset:load("sprites"), {25}),
@@ -171,7 +171,7 @@ cons_pistol = cons_gun(
         300, -- speed
         anim:new(tileset:load("sprites"), {10}), -- sprite,
         1, -- damage
-        1 -- layer
+        layer_world + layer_enemy -- layer
     ),
     anim_ctl:new{
         start = anim:new(tileset:load("sprites"), {9}),

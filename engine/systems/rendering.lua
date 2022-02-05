@@ -15,11 +15,12 @@ function rend_map:render(e)
     for layer_id, layer in pairs(self.map.layers) do
         local tileset = self.map:tileset(layer_id)
         for index, sprite_id in pairs(layer.data) do
-            if sprite_id ~= 0 then
-                local p = self.map:tileIndexToVector(index)
+            if self.map:tileset(layer_id):props(sprite_id).Solid then
+                local p = self.map:tileIndexToVector(index) - global_camera
                 love.graphics.draw(
                     tileset:sprite(sprite_id),
-                    p.x*zoom, p.y*zoom
+                    p.x*global_zoom,
+                    p.y*global_zoom
                 )
             end
         end

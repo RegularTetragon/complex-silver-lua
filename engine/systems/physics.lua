@@ -1,3 +1,8 @@
+local worlds = {}
+function getWorld(id)
+    worlds[id] = worlds[id] or love.physics.newWorld()
+end
+
 rb = system {
     name = "rb",
     priority = 1

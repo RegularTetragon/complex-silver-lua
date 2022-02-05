@@ -13,8 +13,8 @@ function pickup:update(e, dt)
     if not self.anchor then
         self.anchor = e.trans.p
     end
-    self.float_t = self.float_t + dt
-    e.trans.p = self.anchor + v2:new(0, math.sin(self.float_t) * 3)
+    self.float_t = self.float_t + dt * 4
+    e.trans.p = self.anchor + v2:new(0, math.sin(self.float_t) * 2)
 end
 function pickup:render()
 end

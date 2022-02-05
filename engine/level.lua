@@ -1,6 +1,7 @@
 require "engine.constructors.pickups"
 require "engine.constructors.player"
 require "engine.constructors.guns"
+require "engine.constructors.tiles"
 require "engine.entity"
 require "engine.systems.rendering"
 require "engine.v2"

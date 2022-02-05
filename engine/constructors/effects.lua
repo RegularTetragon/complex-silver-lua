@@ -14,7 +14,7 @@ function cons_shrapnel(n, pos, sprs)
             spr_i = i % #sprs + 1
         end
 
-        e:add(anim:new(sprs[spr_i], 4))
+        e:add(anim:new(tileset:load "sprites", sprs[spr_i], 4))
         e:add(debris:new(math.random() * 1 + 1))
     end
 end
@@ -31,7 +31,7 @@ function cons_explosion(dmg, pos, layer)
             e:add(trans:new())
             e.trans.p = pos
             e:add(rb:new(0, 0))
-            e.rb.v = v2:angle(i / explosion_angles, explosion_speed * r / explosion_rs)
+            e.rb.v = v2:angle(i / explosion_angles * math.pi * 2, explosion_speed * r / explosion_rs)
             e.rb.gravity = 1
             e:add(col:new(zero, sprite_size, false, false))
             e:add(anim:new(tileset:load("sprites"), {29, 30, 32}, 5))

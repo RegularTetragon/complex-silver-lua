@@ -1,10 +1,11 @@
 require "engine.constants"
-
+local layerset = require "engine.layer"
 damager = system {
     name = "damager"
 }
 damager.__index = damager
 function damager:new(dmg, layer)
+    assert(getmetatable(layer)==layerset)
     return setmetatable({
         dmg = dmg,
         layer = layer or layer_world
@@ -22,14 +23,15 @@ end
 function damager:render()
 end
 
-local health = system {
+health = system {
     name = "health"
 }
 health.__index = health
 function health:new(base_health, layer)
+    assert(getmetatable(layer)==layerset, stringify(layerset))
     return setmetatable({
         health = base_health,
-        layer = layer or 0xff,
+        layer = layer or layer_all,
         max_health = base_health,
         on_death_callbacks = {},
         callbacks_done = false

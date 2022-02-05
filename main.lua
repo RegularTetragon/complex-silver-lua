@@ -2,6 +2,8 @@ if os.getenv("LOCAL_LUA_DEBUGGER_VSCODE") == "1" then
     require("lldebugger").start()
 end
 
+require "engine.state"
+
 require "engine.entity"
 require "engine.systems"
 require "engine.tileset"
@@ -30,7 +32,7 @@ end
 
 function love.draw()
     local e_count
-    love.graphics.scale(zoom, zoom)
+    love.graphics.scale(global_zoom, global_zoom)
     for _, system in pairs(systems) do
         e_count = 0
         for entity, active in pairs(entities) do
